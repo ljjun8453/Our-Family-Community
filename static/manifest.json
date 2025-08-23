@@ -1,0 +1,20 @@
+{
+  "name": "우리 가족 커뮤니티",
+  "short_name": "우리넷",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#6bb4f3",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/static/img/icon-192.PNG",
+      "sizes": "192x192",
+      "type": "image/PNG"
+    },
+    {
+      "src": "/static/img/icon-512.PNG",
+      "sizes": "512x512",
+      "type": "image/PNG"
+    }
+  ]
+}

@@ -1,0 +1,544 @@
+:root {
+    --main-bg: #f8f9fa;
+    --primary: #4a90e2;
+    --accent: #fdd835;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--main-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  header {
+    background: linear-gradient(to right, var(--primary), #6bb4f3);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  /* 하이퍼링크 CSS */
+  div[class="footer-header"] {
+    color: gray;
+  }
+  a {
+    text-decoration: none;
+  }
+  a[id="openTerms"] {
+    text-decoration: none;
+    color: gray;
+  }
+  a[id="openPrivate"] {
+    text-decoration: none;
+    color: gray;
+  }
+  .text-decoration {
+    text-decoration: none;
+    color: white;
+  }
+  
+  table {
+    border-collapse: collapse;
+  }
+  tr, td {
+    border: solid 1px black;
+    text-align: center;
+    font-size: 0.7em;
+  }
+
+  .menu-toggle {
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: none;
+    z-index: 1001;
+  }
+
+  nav {
+    display: flex;
+    gap: 20px;
+  }
+  /* nav + 버튼 감싸는 영역 스타일 */
+  .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+  }
+
+  nav a {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* 슬라이드 메뉴 (모바일용) */
+  .side-nav {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: var(--primary);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+  }
+
+  .side-nav a {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .side-nav.active {
+    right: 0;
+  }
+
+  main {
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  .board-section {
+    margin-bottom: 40px;
+    transition: transform 0.2s ease;
+  }
+
+  .board-section h2 {
+    color: var(--primary);
+    margin-top: 15px;
+  }
+
+  .post-list {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 4px 10px var(--shadow);
+  }
+
+  /* 게시글 hover 효과 (개별 적용) */
+  .post {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      cursor: pointer;
+  }
+
+  .post:hover {
+      transform: translateY(-3px);
+      background-color: #f5faff;
+  }
+
+  .post:last-child {
+    border-bottom: none;
+  }
+
+  .post-title {
+    font-weight: 600;
+  }
+
+  .post-meta {
+    font-size: 0.85rem;
+    color: #777;
+  }
+
+  .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+  }
+
+  .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+  }
+
+  .btn-login {
+      background-color: #d0f0c0; /* 연한 초록 */
+      color: #2d7032;
+  }
+
+  .btn-login:hover {
+      background-color: #c0e8b0;
+  }
+
+  .btn-signup {
+      background-color: #fcdede; /* 연한 빨강 */
+      color: #b00020;
+  }
+
+  .btn-signup:hover {
+      background-color: #f9caca;
+  }
+
+  .btn-write {
+      background-color: #e0ecff;
+      color: #2f4f99;
+      margin-top: 15px;
+  }
+
+  .btn-write:hover {
+      background-color: #d0e0ff;
+  }
+
+  .btn-detail {
+      background-color: #d0f0c0; /* 연한 초록 */
+      color: #2d7032;
+      margin-top: 15px;
+  }
+
+  .btn-mypage {
+      background-color: #d0f0c0; /* 연한 초록 */
+      color: #2d7032;
+  }
+  .btn-mypage:hover {
+      background-color: #c0e8b0;
+  }
+
+  /* a 태그로 된 버튼들도 버튼처럼 보이게 통일 */
+  a.btn-write, a.btn-detail {
+    display: inline-block;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-family: inherit;
+    background-color: #e0ecff; /* 기본 btn-write 색 */
+    color: #2f4f99;
+    margin-top: 15px;
+    text-align: center;
+    line-height: normal;
+    font-size: 0.85em;
+  }
+
+  a.btn-write:hover {
+    background-color: #d0e0ff;
+  }
+
+  a.btn-detail {
+    background-color: #d0f0c0; /* 기본 btn-detail 색 */
+    color: #2d7032;
+  }
+
+  a.btn-detail:hover {
+    background-color: #c0e8b0;
+  }
+
+  .id-box {
+    display: flex;
+    gap: 10px;
+  }
+
+  .id-check-box {
+    flex: 1;
+  }
+
+  .btn-detail:hover {
+      background-color: #c0e8b0;
+  }
+
+  .btn-check {
+    background-color: #d0f0c0;
+    color: #2d7032;
+  }
+
+  .btn-check:hover {
+    background-color: #c0e8b0;
+}
+
+  /* 게시판 제목 + 자세히 보기 */
+  .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+  /* 게시판 글쓰기 + 자세히 보기 버튼 */
+  .section-header2 {
+      display: flex;
+      gap: 10px;
+  }
+
+
+  .footer {
+    background-color: #e9ecef;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+  }
+  .footer-header {
+    display: flex;
+    flex-direction: column;
+  }
+  div > p {
+    color: gray;
+    font-weight: bold;
+  }
+
+  /* 모달창 */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    
+  }
+
+  .modal-content2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-content3 {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .modal-content input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .close:hover {
+    color: black;
+  }
+
+  .font1 {
+    color: black;
+  }
+  .font2 {
+    color: white;
+    font-weight: 600;
+  }
+  .modal-content3 ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+
+
+
+  /* 페이지네이션 */
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .pagination a, .pagination strong {
+    margin: 0 5px;
+    padding: 8px 12px;
+    text-decoration: none;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 5px;
+  }
+  
+  .pagination strong {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* 첨부파일 이름 보이기 */
+  #file-list ul {
+    padding-left: 20px;
+  }
+  #file-list li {
+        list-style-type: disc;
+        font-size: 14px;
+        margin-bottom: 4px;
+  }
+  .margin-top{
+    margin-top: 20px;
+  }
+  .text-align-right {
+    text-align: right;
+  }
+
+  /* 게시글쓰기 */
+  .btn-list {
+    background-color: #d0f0c0;
+    color: #2d7032;
+    margin-top: 15px;
+    font-size: 0.7em
+  }
+  .btn-list:hover {
+    background-color: #c0e8b0;
+  }
+  .write-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  /* Toast UI Editor 본문 글꼴 바꾸기 */
+  .toastui-editor-contents,
+  .toastui-editor-contents p,
+  .toastui-editor-contents span,
+  .toastui-editor-contents div {
+    font-family: 'Noto Sans KR', sans-serif !important;
+    font-weight: 300 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+  }
+  /* Toast UI 에디터 팝업 오른쪽 정렬 (모바일에서 더보기 잘리는 문제 해결) */
+  .toastui-editor-popup {
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    max-width: 90vw;
+    box-sizing: border-box;
+  }
+  .alert {
+    color: red;
+    font-size: 0.8em;
+    margin: 5px auto;
+  }
+  /* Toast UI 에디터 동영상 버튼 */
+  .toastui-editor-icon-video {
+    background-image: url('/static/img/video-icon.svg'); /* 너가 준비한 아이콘 경로 */
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .toastui-editor-icon-video:hover {
+    filter: brightness(1.2);
+  }
+
+  .btn-align-01 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-logout-pd {
+    padding: 6px 18px;
+  }
+  
+  /* PC환경 or Mobile 환경 */
+  .pc-only {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-only {
+    display: none;
+  }
+
+  /* 반응형 처리 */
+  @media (max-width: 768px) {
+    nav {
+      display: none;
+    }
+
+    .pc-only {
+      display: none !important;
+    }
+
+    .menu-toggle {
+      display: block;
+    }
+
+    .mobile-only {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      margin-top: 8px;
+      gap: 10px;
+    }
+
+    a.btn-write {
+      display: inline-block;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: inherit;
+      background-color: #e0ecff; /* 기본 btn-write 색 */
+      color: #2f4f99;
+      margin-top: 15px;
+      text-align: center;
+      line-height: normal;
+      font-size: 0.7em;
+    }
+    a.btn-detail {
+      display: inline-block;
+      padding: 8px 12px 6px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: inherit;
+      background-color: #d0f0c0; /* 기본 btn-detail 색 */
+      color: #2d7032;
+      margin-top: 15px;
+      text-align: center;
+      line-height: normal;
+      font-size: 0.7em;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .side-nav {
+      display: none;
+    }
+
+    
+    .btn-list {
+      font-size: 0.85em;
+      font-weight: bolder;
+    }
+  }

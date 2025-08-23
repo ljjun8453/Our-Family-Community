@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>우리 가족 커뮤니티</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+  <!-- <link rel="stylesheet" href="../static/home.css"> -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <!-- 파비콘 -->
+  <link rel="icon" href="{{ url_for('static', filename='img/icon-512.PNG') }}">
+</head>
+<body>
+  <header>
+    <a href="{{ url_for('home') }}" class="text-decoration"><h1>우리 가족 커뮤니티 🌟</h1></a>
+    <div class="navbar-right">
+        <nav>
+            <a href="{{ url_for('home') }}" style="color:rgb(255, 225, 0);">홈</a>
+            <a href="{{ url_for('board_list', board_name='notice') }}">공지사항</a>
+            <a href="{{ url_for('board_list', board_name='free') }}">자유게시판</a>
+            <a href="{{ url_for('board_list', board_name='album') }}">가족 앨범</a>
+            <a href="#">이벤트 소식</a>
+        </nav>
+        <!-- PC 전용 로그인/회원가입 버튼 -->
+        <div class="header-actions pc-only">
+            <span class="font2">{{ userid }}님 환영합니다 🎉</span>
+            <div class="btn-align-01">
+              <form action="/mypage" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="submit" class="btn btn-mypage" value="마이페이지"></input>
+              </form>
+              <form action="/logout" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="submit" class="btn btn-signup btn-logout-pd" value="로그아웃"></input>
+              </form>    
+            </div>               
+        </div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+  </header>
+
+  <!-- 슬라이딩 메뉴 안에 로그인/회원가입 버튼 -->
+  <nav class="side-nav" id="sideNav">
+    <div class="header-actions mobile-only">
+        <span class="font2">{{ userid }}님<br> 환영합니다 🎉</span>
+        <form action="/mypage" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="submit" class="btn btn-mypage" value="마이페이지"></input>
+        </form>
+        <form action="/logout" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="submit" class="btn btn-signup btn-logout-pd" value="로그아웃"></input>
+        </form>    
+    </div>
+    <a href="{{ url_for('home') }}" style="color:rgb(255, 225, 0);">홈 <<</a>
+    <a href="{{ url_for('board_list', board_name='notice') }}">공지사항</a>
+    <a href="{{ url_for('board_list', board_name='free') }}">자유게시판</a>
+    <a href="{{ url_for('board_list', board_name='album') }}">가족 앨범</a>
+    <a href="#">이벤트 소식</a> 
+  </nav>
+
+  <main>
+    <!-- 공지사항 -->
+    <section class="board-section">
+      <div class="section-header">
+        <h2>📢 공지사항</h2>
+        <div class="section-header2">
+            <a href="{{ url_for('write_post', board_name='notice') }}" class="btn btn-write">글쓰기 ✍️</a>
+            <a href="{{ url_for('board_list', board_name='notice') }}" class="btn btn-detail">더보기 ➕</a>
+        </div>
+      </div>
+      <div class="post-list">
+        {% for post in notice_posts %}
+          <div class="post" onclick="location.href='{{ url_for('view_post', board_name='notice', post_id=post.id) }}'">
+            <div class="post-title">{{ post.title }}</div>
+            <div class="post-meta">{{ post.author_name }} | {{ post.created_at.strftime('%Y-%m-%d') }}</div>
+          </div>
+        {% else %}
+          <div class="post">게시글이 없습니다.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- 자유게시판 -->
+    <section class="board-section">
+      <div class="section-header">
+        <h2>💬 자유게시판</h2>
+        <div class="section-header2">
+            <a href="{{ url_for('write_post', board_name='free') }}" class="btn btn-write">글쓰기 ✍️</a>
+            <a href="{{ url_for('board_list', board_name='free') }}" class="btn btn-detail">더보기 ➕</a>
+        </div>
+      </div>
+      <div class="post-list">
+        {% for post in free_posts %}
+          <div class="post" onclick="location.href='{{ url_for('view_post', board_name='free', post_id=post.id) }}'">
+            <div class="post-title">{{ post.title }}</div>
+            <div class="post-meta">{{ post.author_name }} | {{ post.created_at.strftime('%Y-%m-%d') }}</div>
+          </div>
+        {% else %}
+          <div class="post">게시글이 없습니다.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- 가족 앨범 -->
+    <section class="board-section">
+      <div class="section-header">
+        <h2>📸 가족 앨범</h2>
+        <div class="section-header2">
+            <a href="{{ url_for('write_post', board_name='album') }}" class="btn btn-write">글쓰기 ✍️</a>
+            <a href="{{ url_for('board_list', board_name='album') }}" class="btn btn-detail">더보기 ➕</a>     
+        </div>
+      </div>
+      <div class="post-list">
+        {% for post in album_posts %}
+          <div class="post" onclick="location.href='{{ url_for('view_post', board_name='album', post_id=post.id) }}'">
+            <div class="post-title">{{ post.title }}</div>
+            <div class="post-meta">{{ post.author_name }} | {{ post.created_at.strftime('%Y-%m-%d') }}</div>
+          </div>
+        {% else %}
+          <div class="post">게시글이 없습니다.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- 이벤트 소식 -->
+    <section class="board-section">
+      <div class="section-header">
+        <h2>🎉 이벤트 소식</h2>
+        <div class="section-header2">
+            <button onclick="alert('띠용! 아직 준비중입니다!')" class="btn btn-write">글쓰기 ✍️</button>
+            <button onclick="alert('띠용! 아직 준비중입니다!')" class="btn btn-detail">더보기 ➕</button>
+        </div>
+      </div>
+      <div class="post-list">
+        <!-- 3개의 예시 이벤트 게시글 -->
+        <div class="post"><div class="post-title">우리 가족 생일 🎉</div><div class="post-meta">재준 | 2025-03-29</div></div>
+        <div class="post"><div class="post-title">결혼기념일</div><div class="post-meta">희정 | 2025-03-21</div></div>
+        <div class="post"><div class="post-title">아기 첫돌 기념 📷</div><div class="post-meta">승환 | 2025-03-18</div></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 로그인 모달 -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('loginModal')">&times;</span>
+      <h2>로그인</h2>
+      <form id="login" action="/login" method="post" class="modal-content2">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="text" name="userid" placeholder="아이디" autofocus required />
+        <input type="password" name="password" placeholder="비밀번호" required />
+        <input type="submit" class="btn btn-login" value="로그인"></input>
+      </form>
+    </div>
+  </div>
+
+  <!-- 회원가입 모달 -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('signupModal')">&times;</span>
+      <h2>회원가입</h2>
+      <form id="register" action="/register" method="post" class="modal-content2">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="text" name="name" placeholder="이름" autofocus required />
+        <div class="id-box">
+          <input type="text" name="userid" placeholder="아이디" required />
+          <button class="btn btn-check id-check-box">중복확인</button>
+        </div>
+        <input type="password" name="password" placeholder="비밀번호" required />
+        <input type="password" name="password2" placeholder="비밀번호 확인" required />
+        <input type="email" name="email" placeholder="이메일" required />
+        <input id="birthday" type="text" name="birthdate" placeholder="생년월일 8자리 (예:19001010)" minlength="8" maxlength="8" />
+        <label for="private"><input type="checkbox" name="privacy_agree" id="private" required /> <a href="#" id="openAgreement"><span class="font1">개인정보 수집 및 이용 동의</span></a></label>
+        <input type="submit" class="btn btn-signup" value="회원가입"></input>
+      </form>
+    </div>
+  </div>
+
+  <!-- 이용약관 모달 -->
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('termsModal')">&times;</span>
+      <h2>이용약관</h2>
+      <div class="modal-content2 modal-content3">
+        <ul>
+          <li>"우리 가족 커뮤니티" 웹사이트를 이용해주셔서 감사합니다.</li>
+          <li>본 약관은 사이트 이용과 관련된 기본적인 사항을 규정합니다.</li>
+        </ul>
+        <br>
+        <h4>제1조 (목적)</h4>
+        <ul>
+          <li>본 약관은 "우리 가족 커뮤니티"(이하 "사이트")가 제공하는 모든 서비스(이하 "서비스")의 이용 조건과 절차, 사이트와 회원의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</li>
+        </ul>
+        <br>
+        <h4>제2조 (회원가입)</h4>
+        <ul>
+          <li>회원은 본인의 정보를 사실대로 입력하여야 하며, 타인의 정보를 도용할 경우 법적인 책임을 질 수 있습니다.</li>
+          <li>사이트는 등록된 정보에 대해 확인할 권리를 가지며, 부정확한 정보로 인한 서비스 이용 제한에 대해 책임지지 않습니다.</li>
+        </ul>
+        <br>
+        <h4>제3조 (서비스 이용)</h4>
+        <ul>
+          <li>회원은 본 서비스를 자유롭게 이용할 수 있습니다. 단, 사이트의 시스템을 방해하거나 타인에게 피해를 주는 행위는 금지됩니다.</li>
+          <li>서비스는 시스템 점검, 장애, 기타 불가피한 사유로 일시 중단될 수 있으며, 사이트는 사전 공지 후 이를 수행합니다.</li>
+        </ul>
+        <br>
+        <h4>제4조 (회원 탈퇴 및 자격 정지)</h4>
+        <ul>
+          <li>회원은 언제든지 자발적으로 탈퇴할 수 있습니다.</li>
+          <li>회원이 다음 사항에 해당할 경우 사이트는 이용 제한 또는 탈퇴 조치를 할 수 있습니다:</li>
+          <li>타인의 정보를 도용하거나 부정한 행위를 한 경우</li>
+          <li>서비스 운영을 방해하는 행위를 한 경우</li>
+          <li>관련 법령 및 약관을 위반한 경우</li>
+        </ul>
+        <br>
+        <h4>제5조 (면책 조항)</h4>
+        <ul>
+          <li>사이트는 회원이 서비스를 이용하여 기대하는 목적을 얻지 못하거나 손해를 입은 것에 대해 책임지지 않습니다.</li>
+          <li>사이트는 천재지변, 시스템 고장 등 불가항력적 사유로 인한 서비스 장애에 대해 책임지지 않습니다.</li>
+        </ul>
+        <br>
+        <h4>제6조 (약관의 효력 및 변경)</h4>
+        <ul>
+          <li>본 약관은 게시와 동시에 효력이 발생합니다.</li>
+          <li>사이트는 필요시 약관을 변경할 수 있으며, 변경 시 사전 공지합니다.</li>
+        </ul>
+        <hr>
+        <span>※ 본 약관은 2025년 4월 18일부터 적용됩니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 개인정보처리방침 모달 -->
+  <div id="privateModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privateModal')">&times;</span>
+      <h2>개인정보처리방침</h2>
+      <div class="modal-content2 modal-content3">
+        <ul>
+          <li>"우리 가족 커뮤니티"는 사용자의 개인정보를 소중히 다루며, 아래와 같은 방침에 따라 보호하고 있습니다.</li>
+        </ul>
+        <br>
+        <h4>1. 수집하는 개인정보 항목</h4>
+        <ul>
+          <li>필수 항목 : 이름, 아이디, 비밀번호, 이메일</li>
+          <li>선택 항목 : 생년월일</li>
+        </ul>
+        <br>
+        <h4>2. 개인정보 수집 방법</h4>
+        <ul>
+          <li>회원가입 시 사용자로부터 직접 수집</li>
+        </ul>
+        <br>
+        <h4>3. 개인정보 이용 목적</h4>
+        <ul>
+          <li>사용자 식별 및 로그인 서비스 제공</li>
+          <li>게시글 생성, 조회, 수정, 삭제</li>
+          <li>게시판 접근 권한 및 사용자 관리</li>
+          <li>공지사항 등 서비스 운영 정보 전달</li>
+        </ul>
+        <br>
+        <h4>4. 개인정보의 보유 및 이용 기간</h4>
+        <ul>
+          <li>회원 탈퇴 시 즉시 파기</li>
+          <li>단, 관계 법령에 따라 일정 기간 보관이 필요한 경우 해당 기간 동안 보관</li>
+        </ul>
+        <table>
+          <tr>
+            <td>보관 항목</td>
+            <td>보존 사유</td>
+            <td>보존 근거</td>
+            <td>보존 기간</td>
+          </tr>
+          <tr>
+            <td>접속 로그</td>
+            <td>시스템 보안 및 오류 확인</td>
+            <td>통신비밀보호법</td>
+            <td>최대 3개월</td>
+          </tr>
+        </table>
+        <br>
+        <h4>5. 개인정보 제3자 제공</h4>
+        <ul>
+          <li>"우리 가족 커뮤니티"는 사용자의 개인정보를 외부에 제공하지 않습니다.</li>
+        </ul>
+        <br>
+        <h4>6. 개인정보 보호를 위한 기술적/관리적 대책</h4>
+        <ul>
+          <li>비밀번호 암호화 저장</li>
+          <li>서버-클라이언트 패킷 송수신 프로토콜 암호화</li>
+          <li>서버 보안 설정 및 접근 제한</li>
+          <li>관리자 외 타인의 개인정보 접근 금지</li>
+        </ul>
+        <br>
+        <h4>7. 이용자의 권리</h4>
+        <ul>
+          <li>본인 개인정보 조회, 수정, 삭제 요청 가능</li>
+          <li>언제든지 회원 탈퇴를 통해 개인정보 삭제 가능</li>
+        </ul>
+        <br>
+        <h4>8. 책임자 정보</h4>
+        <ul>
+          <li>운영자: 임재준</li>
+          <li>이메일: ljj3296@jaejun.net</li>
+        </ul>
+        <span>문의 사항은 이메일로 연락 바랍니다.</span>
+        <hr>
+        <span>※ 본 방침은 2025년 4월 18일부터 적용됩니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 개인정보 수집 및 이용 동의 모달 -->
+  <div id="agreementModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('agreementModal')">&times;</span>
+      <h2>개인정보 수집 및 이용 동의</h2>
+      <div class="modal-content2 modal-content3">
+        <ul>
+          <li>"우리 가족 커뮤니티"는 회원가입, 게시판 이용 등을 위해 최소한의 개인정보를 수집합니다.</li>
+        </ul>
+        <br>
+        <h4>1. 수집 항목</h4>
+        <ul>
+          <li>필수 항목: 이름, 아이디, 비밀번호, 이메일</li>
+          <li>선택 항목: 생년월일</li>
+        </ul>
+        <br>
+        <h4>2. 수집 목적</h4>
+        <ul>
+          <li>회원가입 및 서비스 이용에 따른 본인 확인</li>
+          <li>게시판 기능 사용 및 공지사항 전달</li>
+          <li>고객 문의 대응 및 민원 처리</li>
+        </ul>
+        <br>
+        <h4>3. 보유 및 이용 기간</h4>
+        <ul>
+          <li>회원 탈퇴 시 즉시 파기</li>
+          <li>단, 관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관</li>
+        </ul>
+        <table>
+          <tr>
+            <td>보관 항목</td>
+            <td>보존 사유</td>
+            <td>보존 근거</td>
+            <td>보존 기간</td>
+          </tr>
+          <tr>
+            <td>접속 로그</td>
+            <td>시스템 보안 및 오류 확인</td>
+            <td>통신비밀보호법</td>
+            <td>최대 3개월</td>
+          </tr>
+        </table>
+        <br>
+        <h4>4. 동의를 거부할 권리 및 불이익</h4>
+        <ul>
+          <li>이용자는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.</li>
+          <li>단, 필수 항목에 대한 동의를 거부할 경우 회원가입 및 서비스 이용이 제한될 수 있습니다.</li>
+        </ul>
+        <hr>
+        <span>※ 본 동의서는 2025년 4월 18일부터 적용됩니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-header">
+      <p><a href="#" id="openTerms">이용약관</a> | <a href="#" id="openPrivate">개인정보처리방침</a></p><br>
+      <p>우리 가족 커뮤니티, 모두가 함께하는 따뜻한 공간 💖</p><br>
+      <p>Powered By JaeJun Home Server</p>
+      <p>&copy; 2025. 임재준 All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 햄버거 메뉴
+    const menuToggle = document.getElementById("menuToggle");
+    const sideNav = document.getElementById("sideNav");
+
+    menuToggle.addEventListener("click", () => {
+      sideNav.classList.toggle("active");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!sideNav.contains(e.target) && !menuToggle.contains(e.target)) {
+        sideNav.classList.remove("active");
+      }
+    });
+
+    // 로그인 모달창
+    document.querySelectorAll('.btn-login').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('loginModal').style.display = 'block';
+      });
+    });
+
+    // 회원가입 모달창
+    document.querySelectorAll('.btn-signup').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('signupModal').style.display = 'block';
+      });
+    });
+
+    // 모달창 닫기
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    window.addEventListener('click', (event) => {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    });
+
+    // 회원가입-생년월일 8자리 입력 유효성검사
+    const form = document.querySelector('#register');
+    const input = document.querySelector('#birthday');
+
+    form.addEventListener('submit', (e) => {
+      if (!/^\d{8}$/.test(input.value)) {
+        e.preventDefault();
+        alert("생년월일 8자리 숫자를 입력해주세요. (ex:19001010)");
+      }
+    });
+
+    // 이용약관 모달창
+    document.getElementById('openTerms').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('termsModal').style.display = 'block';
+    });
+
+    // 개인정보처리방침 모달창
+    document.getElementById('openPrivate').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('privateModal').style.display = 'block';
+    });
+
+    // 개인정보 수집 및 이용 동의 모달창
+    document.getElementById('openAgreement').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('agreementModal').style.display = 'block';
+    });
+
+
+  </script>
+</body>
+</html>
